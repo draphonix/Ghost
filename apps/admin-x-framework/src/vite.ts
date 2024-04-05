@@ -2,8 +2,7 @@ import react from '@vitejs/plugin-react';
 import {PluginOption, UserConfig, mergeConfig} from 'vite';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import svgr from 'vite-plugin-svgr';
-import {defineConfig} from 'vitest/config';
-
+import {UserConfig as vitestConfig, defineConfig} from 'vitest/config';
 const externalPlugin = ({externals}: { externals: Record<string, string> }): PluginOption => {
     return {
         name: 'external-globals',
@@ -43,7 +42,7 @@ export default function adminXViteConfig({packageName, entry, overrides}: {packa
                 }
             }),
             cssInjectedByJsPlugin()
-        ],
+        ] as vitestConfig['plugins'],
         define: {
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
             'process.env.VITEST_SEGFAULT_RETRY': 3

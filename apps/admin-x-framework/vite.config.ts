@@ -1,7 +1,7 @@
 import react from '@vitejs/plugin-react';
 import glob from 'glob';
 import {resolve} from 'path';
-import {defineConfig} from 'vitest/config';
+import {UserConfig, defineConfig} from 'vite';
 
 // https://vitejs.dev/config/
 export default (function viteConfig() {
@@ -9,7 +9,7 @@ export default (function viteConfig() {
         logLevel: process.env.CI ? 'info' : 'warn',
         plugins: [
             react()
-        ],
+        ] as UserConfig['plugins'],
         preview: {
             port: 4174
         },
