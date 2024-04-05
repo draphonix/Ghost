@@ -1,9 +1,6 @@
 import CodeInjection from './CodeInjection';
-import DangerZone from './DangerZone';
 import History from './History';
 import Integrations from './Integrations';
-import Labs from './Labs';
-import MigrationTools from './MigrationTools';
 import React from 'react';
 import SearchableSection from '../../SearchableSection';
 
