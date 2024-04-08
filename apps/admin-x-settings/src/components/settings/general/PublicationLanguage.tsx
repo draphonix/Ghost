@@ -1,10 +1,16 @@
-import React from 'react';
-import TopLevelGroup from '../../TopLevelGroup';
-import useSettingGroup from '../../../hooks/useSettingGroup';
-import {SettingGroupContent, TextField, withErrorBoundary} from '@tryghost/admin-x-design-system';
-import {getSettingValues} from '@tryghost/admin-x-framework/api/settings';
+import React from "react";
+import TopLevelGroup from "../../TopLevelGroup";
+import useSettingGroup from "../../../hooks/useSettingGroup";
+import {
+    SettingGroupContent,
+    TextField,
+    withErrorBoundary,
+} from "@tryghost/admin-x-design-system";
+import { getSettingValues } from "@tryghost/admin-x-framework/api/settings";
 
-const PublicationLanguage: React.FC<{ keywords: string[] }> = ({keywords}) => {
+const PublicationLanguage: React.FC<{ keywords: string[] }> = ({
+    keywords,
+}) => {
     const {
         localSettings,
         isEditing,
@@ -13,29 +19,32 @@ const PublicationLanguage: React.FC<{ keywords: string[] }> = ({keywords}) => {
         handleCancel,
         updateSetting,
         focusRef,
-        handleEditingChange
+        handleEditingChange,
     } = useSettingGroup();
 
-    const [publicationLanguage] = getSettingValues(localSettings, ['locale']) as string[];
+    const [publicationLanguage] = getSettingValues(localSettings, [
+        "locale",
+    ]) as string[];
 
     const handleLanguageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        updateSetting('locale', e.target.value);
+        updateSetting("locale", e.target.value);
     };
 
     const values = (
-        <SettingGroupContent values={[
-            {
-                heading: 'Site language',
-                key: 'site-language',
-                value: publicationLanguage
-            }
-        ]} />
+        <SettingGroupContent
+            values={[
+                {
+                    heading: "Ngôn ngữ trang web",
+                    key: "site-language",
+                    value: publicationLanguage,
+                },
+            ]}
+        />
     );
 
     const hint = (
         <>
-            Default: English (<strong>en</strong>); find out more about
-            <a className='text-green-400' href="https://ghost.org/docs/faq/translation/" rel="noopener noreferrer" target="_blank"> using Ghost in other languages</a>
+            Mặc định: English (<strong>en</strong>);
         </>
     );
 
@@ -45,7 +54,7 @@ const PublicationLanguage: React.FC<{ keywords: string[] }> = ({keywords}) => {
                 hint={hint}
                 inputRef={focusRef}
                 placeholder="Site language"
-                title='Site language'
+                title="Ngôn ngữ trang web"
                 value={publicationLanguage}
                 onChange={handleLanguageChange}
             />
@@ -54,13 +63,13 @@ const PublicationLanguage: React.FC<{ keywords: string[] }> = ({keywords}) => {
 
     return (
         <TopLevelGroup
-            description="Set the language/locale which is used on your site"
+            description="Cài đặt ngôn ngữ trang web của bạn"
             isEditing={isEditing}
             keywords={keywords}
-            navid='publication-language'
+            navid="publication-language"
             saveState={saveState}
-            testId='publication-language'
-            title="Publication Language"
+            testId="publication-language"
+            title="Ngôn ngữ xuất bản"
             onCancel={handleCancel}
             onEditingChange={handleEditingChange}
             onSave={handleSave}
@@ -70,4 +79,4 @@ const PublicationLanguage: React.FC<{ keywords: string[] }> = ({keywords}) => {
     );
 };
 
-export default withErrorBoundary(PublicationLanguage, 'Publication language');
+export default withErrorBoundary(PublicationLanguage, "Ngôn ngữ xuất bản");

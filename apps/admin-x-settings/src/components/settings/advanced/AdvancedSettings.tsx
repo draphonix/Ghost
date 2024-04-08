@@ -1,24 +1,75 @@
-import CodeInjection from './CodeInjection';
-import DangerZone from './DangerZone';
-import History from './History';
-import Integrations from './Integrations';
-import Labs from './Labs';
-import MigrationTools from './MigrationTools';
-import React from 'react';
-import SearchableSection from '../../SearchableSection';
+import CodeInjection from "./CodeInjection";
+import History from "./History";
+import Integrations from "./Integrations";
+import React from "react";
+import SearchableSection from "../../SearchableSection";
+import Labs from "./Labs";
 
 export const searchKeywords = {
-    integrations: ['advanced', 'integrations', 'zapier', 'slack', 'amp', 'unsplash', 'first promoter', 'firstpromoter', 'pintura', 'disqus', 'analytics', 'ulysses', 'typeform', 'buffer', 'plausible', 'github'],
-    migrationtools: ['import', 'export', 'migrate', 'substack', 'substack', 'migration', 'medium'],
-    codeInjection: ['advanced', 'code injection', 'head', 'footer'],
-    labs: ['advanced', 'labs', 'alpha', 'beta', 'flag', 'routes', 'redirect', 'translation', 'editor', 'portal'],
-    history: ['advanced', 'history', 'log', 'events', 'user events', 'staff'],
-    dangerzone: ['danger', 'danger zone', 'delete', 'content', 'delete all content', 'delete site']
+    integrations: [
+        "nâng cao",
+        "tích hợp",
+        "zapier",
+        "slack",
+        "amp",
+        "unsplash",
+        "người khuyến mãi đầu tiên",
+        "firstpromoter",
+        "pintura",
+        "disqus",
+        "phân tích",
+        "ulysses",
+        "typeform",
+        "buffer",
+        "plausible",
+        "github",
+    ],
+    migrationtools: [
+        "nhập khẩu",
+        "xuất khẩu",
+        "di chuyển",
+        "substack",
+        "substack",
+        "di cư",
+        "medium",
+    ],
+    codeInjection: ["nâng cao", "tiêm mã", "đầu", "chân trang"],
+    labs: [
+        "nâng cao",
+        "phòng thí nghiệm",
+        "alpha",
+        "beta",
+        "cờ",
+        "đường dẫn",
+        "điều hướng",
+        "dịch",
+        "biên tập viên",
+        "cổng",
+    ],
+    history: [
+        "nâng cao",
+        "lịch sử",
+        "nhật ký",
+        "sự kiện",
+        "sự kiện người dùng",
+        "nhân viên",
+    ],
+    dangerzone: [
+        "nguy hiểm",
+        "khu vực nguy hiểm",
+        "xóa",
+        "nội dung",
+        "xóa tất cả nội dung",
+        "xóa trang web",
+    ],
 };
 
 const AdvancedSettings: React.FC = () => {
     return (
-        <SearchableSection keywords={Object.values(searchKeywords).flat()} title='Advanced'>
+        <SearchableSection
+            keywords={Object.values(searchKeywords).flat()}
+            title="Advanced"
+        >
             <Integrations keywords={searchKeywords.integrations} />
             {/* <MigrationTools keywords={searchKeywords.migrationtools} /> */}
             <CodeInjection keywords={searchKeywords.codeInjection} />
