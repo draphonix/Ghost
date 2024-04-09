@@ -1,14 +1,14 @@
-import Component from '@glimmer/component';
-import moment from 'moment-timezone';
-import {htmlSafe} from '@ember/template';
-import {isArray} from '@ember/array';
-import {isServerUnreachableError} from 'ghost-admin/services/ajax';
-import {inject as service} from '@ember/service';
-import {task} from 'ember-concurrency';
-import {tracked} from '@glimmer/tracking';
+import Component from "@glimmer/component";
+import moment from "moment-timezone";
+import { htmlSafe } from "@ember/template";
+import { isArray } from "@ember/array";
+import { isServerUnreachableError } from "ghost-admin/services/ajax";
+import { inject as service } from "@ember/service";
+import { task } from "ember-concurrency";
+import { tracked } from "@glimmer/tracking";
 
 function isString(str) {
-    return toString.call(str) === '[object String]';
+    return toString.call(str) === "[object String]";
 }
 
 export default class PublishFlowOptions extends Component {
@@ -22,91 +22,108 @@ export default class PublishFlowOptions extends Component {
     willPublish = this.args.publishOptions.willPublish;
 
     buttonTextMap = {
-        'publish+send': {
-            idle: 'Publish & send',
-            running: 'Publishing & sending',
-            success: 'Published & sent'
+        "publish+send": {
+            idle: "Publish & send",
+            running: "Publishing & sending",
+            success: "Published & sent",
         },
         send: {
-            idle: 'Send email',
-            running: 'Sending',
-            success: 'Sent'
+            idle: "Send email",
+            running: "Sending",
+            success: "Sent",
         },
         publish: {
-            idle: 'Publish',
-            running: 'Publishing',
-            success: 'Published'
+            idle: "Xuất bản",
+            running: "Đang xuất bản",
+            success: "Đã xuất bản",
         },
         schedule: {
             // idle: '', - uses underlying publish type text
-            running: 'Scheduling',
-            success: 'Scheduled'
-        }
+            running: "Đang lên lịch",
+            success: "Đã lên lịch",
+        },
     };
 
     get publishType() {
-        const {publishOptions} = this.args;
+        const { publishOptions } = this.args;
 
         if (this.willPublish && this.willEmail) {
-            return 'publish+send';
+            return "publish+send";
         } else if (publishOptions.willOnlyEmail) {
-            return 'send';
+            return "send";
         } else {
-            return 'publish';
+            return "publish";
         }
     }
 
     get confirmButtonText() {
-        let buttonText = '';
+        let buttonText = "";
 
         buttonText = this.buttonTextMap[this.publishType].idle;
 
-        if (this.publishType === 'publish') {
-            buttonText += ` ${this.args.publishOptions.post.displayName}`;
-        }
+        // if (this.publishType === "publish") {
+        //     buttonText += ` ${this.args.publishOptions.post.displayName}`;
+        // }
 
         if (this.args.publishOptions.isScheduled) {
-            const scheduleMoment = moment.tz(this.args.publishOptions.scheduledAtUTC, this.settings.timezone);
-            buttonText += `, on ${scheduleMoment.format('MMMM Do')}`;
+            const scheduleMoment = moment.tz(
+                this.args.publishOptions.scheduledAtUTC,
+                this.settings.timezone
+            );
+            buttonText += `, vào ngày ${scheduleMoment.format("DD/MM")}`;
         } else {
-            buttonText += ', right now';
+            buttonText += ", ngay bây giờ";
         }
 
         return buttonText;
     }
 
     get confirmRunningText() {
-        const publishType = this.args.publishOptions.isScheduled ? 'schedule' : this.publishType;
+        const publishType = this.args.publishOptions.isScheduled
+            ? "schedule"
+            : this.publishType;
         return this.buttonTextMap[publishType].running;
     }
 
     get confirmSuccessText() {
-        const publishType = this.args.publishOptions.isScheduled ? 'schedule' : this.publishType;
+        const publishType = this.args.publishOptions.isScheduled
+            ? "schedule"
+            : this.publishType;
         return this.buttonTextMap[publishType].success;
     }
 
-    @task({drop: true})
+    @task({ drop: true })
     *confirmTask() {
         this.errorMessage = null;
 
         try {
             yield this.args.saveTask.perform();
         } catch (e) {
-            if (e === undefined && this.args.publishOptions.post.errors.length !== 0) {
+            if (
+                e === undefined &&
+                this.args.publishOptions.post.errors.length !== 0
+            ) {
                 // validation error
-                const validationError = this.args.publishOptions.post.errors.messages[0];
+                const validationError =
+                    this.args.publishOptions.post.errors.messages[0];
                 this.errorMessage = `Validation failed: ${validationError}`;
                 return false;
             }
 
-            let errorMessage = '';
+            let errorMessage = "";
 
             const payloadError = e?.payload?.errors?.[0];
 
             if (isServerUnreachableError(e)) {
-                errorMessage = 'Unable to connect, please check your internet connection and try again.';
-            } else if (payloadError?.type === 'HostLimitError') {
-                errorMessage = htmlSafe(payloadError.context.replace(/please upgrade/i, '<a href="#/pro">$&</a>'));
+                errorMessage =
+                    "Unable to connect, please check your internet connection and try again.";
+            } else if (payloadError?.type === "HostLimitError") {
+                errorMessage = htmlSafe(
+                    payloadError.context.replace(
+                        /please upgrade/i,
+                        '<a href="#/pro">$&</a>'
+                    )
+                );
             } else if (e && isString(e)) {
                 errorMessage = e;
             } else if (e && isArray(e)) {
@@ -116,7 +133,7 @@ export default class PublishFlowOptions extends Component {
             } else if (payloadError?.message) {
                 errorMessage = e.payload.errors[0].message;
             } else {
-                errorMessage = 'Unknown Error';
+                errorMessage = "Unknown Error";
             }
 
             this.errorMessage = htmlSafe(errorMessage);

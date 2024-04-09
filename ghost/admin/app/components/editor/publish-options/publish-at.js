@@ -1,7 +1,9 @@
-import Component from '@glimmer/component';
-import moment from 'moment-timezone';
-import {action} from '@ember/object';
-import {inject as service} from '@ember/service';
+import Component from "@glimmer/component";
+import moment from "moment-timezone";
+import { action } from "@ember/object";
+import { inject as service } from "@ember/service";
+
+moment.locale("vi");
 
 export default class PublishAtOption extends Component {
     @service settings;
@@ -10,7 +12,7 @@ export default class PublishAtOption extends Component {
     setDate(selectedDate) {
         // selectedDate is a Date object that contains the correct date string in the blog timezone
         const selectedMoment = moment.tz(selectedDate, this.settings.timezone);
-        const {years, months, date} = selectedMoment.toObject();
+        const { years, months, date } = selectedMoment.toObject();
 
         // Create a new moment from existing scheduledAtUTC _in site timezone_.
         // This ensures we're setting the date correctly because we don't need
@@ -19,7 +21,7 @@ export default class PublishAtOption extends Component {
             this.args.publishOptions.scheduledAtUTC,
             this.settings.timezone
         );
-        newDate.set({years, months, date});
+        newDate.set({ years, months, date });
 
         // converts back to UTC
         this.args.publishOptions.setScheduledAt(newDate);
@@ -27,10 +29,13 @@ export default class PublishAtOption extends Component {
 
     @action
     setTime(time, event) {
-        const newDate = moment.tz(this.args.publishOptions.scheduledAtUTC, this.settings.timezone);
+        const newDate = moment.tz(
+            this.args.publishOptions.scheduledAtUTC,
+            this.settings.timezone
+        );
 
         // used to reset the time value on blur if it's invalid
-        const oldTime = newDate.format('HH:mm');
+        const oldTime = newDate.format("HH:mm");
 
         if (!time) {
             event.target.value = oldTime;
@@ -46,14 +51,21 @@ export default class PublishAtOption extends Component {
             return;
         }
 
-        const [hour, minute] = time.split(':').map(n => parseInt(n, 10));
+        const [hour, minute] = time.split(":").map((n) => parseInt(n, 10));
 
-        if (isNaN(hour) || hour < 0 || hour > 23 || isNaN(minute) || minute < 0 || minute > 59) {
+        if (
+            isNaN(hour) ||
+            hour < 0 ||
+            hour > 23 ||
+            isNaN(minute) ||
+            minute < 0 ||
+            minute > 59
+        ) {
             event.target.value = oldTime;
             return;
         }
 
-        newDate.set({hour, minute});
+        newDate.set({ hour, minute });
         this.args.publishOptions.setScheduledAt(newDate);
     }
 }
