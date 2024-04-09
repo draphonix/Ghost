@@ -291,27 +291,27 @@ const Sidebar: React.FC = () => {
                     )}
                     title="Trang web"
                 >
-                    <NavItem
+                    {/* <NavItem
                         icon="palette"
                         keywords={siteSearchKeywords.design}
                         navid="design"
                         title="Thiết kế & nhận diện"
                         onClick={handleSectionClick}
-                    />
+                    /> */}
                     <NavItem
                         icon="navigation"
                         keywords={siteSearchKeywords.navigation}
                         navid="navigation"
-                        title="Duyệt web"
+                        title="Cài đặt trang"
                         onClick={handleSectionClick}
                     />
-                    <NavItem
+                    {/* <NavItem
                         icon="megaphone"
                         keywords={siteSearchKeywords.announcementBar}
                         navid="announcement-bar"
                         title="Thanh thông báo"
                         onClick={handleSectionClick}
-                    />
+                    /> */}
                 </SettingNavSection>
 
                 {/* <SettingNavSection isVisible={checkVisible(Object.values(membershipSearchKeywords).flat())} title="Membership">
