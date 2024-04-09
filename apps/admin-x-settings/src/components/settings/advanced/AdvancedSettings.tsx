@@ -3,7 +3,7 @@ import History from "./History";
 import Integrations from "./Integrations";
 import React from "react";
 import SearchableSection from "../../SearchableSection";
-import Labs from "./Labs";
+// import Labs from "./Labs";
 
 export const searchKeywords = {
     integrations: [
@@ -17,7 +17,7 @@ export const searchKeywords = {
         "firstpromoter",
         "pintura",
         "disqus",
-        "phân tích",
+        "analytics",
         "ulysses",
         "typeform",
         "buffer",
