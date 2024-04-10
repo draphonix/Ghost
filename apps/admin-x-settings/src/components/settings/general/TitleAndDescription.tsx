@@ -1,10 +1,16 @@
-import React from 'react';
-import TopLevelGroup from '../../TopLevelGroup';
-import useSettingGroup from '../../../hooks/useSettingGroup';
-import {SettingGroupContent, TextField, withErrorBoundary} from '@tryghost/admin-x-design-system';
-import {getSettingValues} from '@tryghost/admin-x-framework/api/settings';
+import React from "react";
+import TopLevelGroup from "../../TopLevelGroup";
+import useSettingGroup from "../../../hooks/useSettingGroup";
+import {
+    SettingGroupContent,
+    TextField,
+    withErrorBoundary,
+} from "@tryghost/admin-x-design-system";
+import { getSettingValues } from "@tryghost/admin-x-framework/api/settings";
 
-const TitleAndDescription: React.FC<{ keywords: string[] }> = ({keywords}) => {
+const TitleAndDescription: React.FC<{ keywords: string[] }> = ({
+    keywords,
+}) => {
     const {
         localSettings,
         isEditing,
@@ -13,17 +19,22 @@ const TitleAndDescription: React.FC<{ keywords: string[] }> = ({keywords}) => {
         handleSave,
         handleCancel,
         updateSetting,
-        handleEditingChange
+        handleEditingChange,
     } = useSettingGroup();
 
-    const [title, description] = getSettingValues(localSettings, ['title', 'description']) as string[];
+    const [title, description] = getSettingValues(localSettings, [
+        "title",
+        "description",
+    ]) as string[];
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        updateSetting('title', e.target.value);
+        updateSetting("title", e.target.value);
     };
 
-    const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        updateSetting('description', e.target.value);
+    const handleDescriptionChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        updateSetting("description", e.target.value);
     };
 
     const values = (
@@ -31,15 +42,15 @@ const TitleAndDescription: React.FC<{ keywords: string[] }> = ({keywords}) => {
             columns={2}
             values={[
                 {
-                    heading: 'Site title',
-                    key: 'site-title',
-                    value: title
+                    heading: "Tiêu đề trang web",
+                    key: "site-title",
+                    value: title,
                 },
                 {
-                    heading: 'Site description',
-                    key: 'site-description',
-                    value: description
-                }
+                    heading: "Mô tả trang web",
+                    key: "site-description",
+                    value: description,
+                },
             ]}
         />
     );
@@ -47,31 +58,32 @@ const TitleAndDescription: React.FC<{ keywords: string[] }> = ({keywords}) => {
     const inputFields = (
         <SettingGroupContent>
             <TextField
-                hint="The name of your site"
+                hint="Tiêu đề trang web của bạn, hiển thị ở đầu trang web và trong kết quả tìm kiếm"
                 inputRef={focusRef}
                 placeholder="Site title"
-                title="Site title"
+                title="Tiêu đề trang web"
                 value={title}
                 onChange={handleTitleChange}
             />
             <TextField
-                hint="A short description, used in your theme, meta data and search results"
+                hint="Mô tả trang web của bạn, hiển thị trong kết quả tìm kiếm"
                 placeholder="Site description"
-                title="Site description"
+                title="Mô tả trang web"
                 value={description}
-                onChange={handleDescriptionChange} />
+                onChange={handleDescriptionChange}
+            />
         </SettingGroupContent>
     );
 
     return (
         <TopLevelGroup
-            description='The details used to identify your publication around the web'
+            description="Thông tin cơ bản về trang web của bạn, bao gồm tiêu đề và mô tả."
             isEditing={isEditing}
             keywords={keywords}
-            navid='general'
+            navid="general"
             saveState={saveState}
-            testId='title-and-description'
-            title='Title & description'
+            testId="title-and-description"
+            title="Tiêu đề & mô tả"
             onCancel={handleCancel}
             onEditingChange={handleEditingChange}
             onSave={handleSave}
@@ -81,4 +93,4 @@ const TitleAndDescription: React.FC<{ keywords: string[] }> = ({keywords}) => {
     );
 };
 
-export default withErrorBoundary(TitleAndDescription, 'Title & description');
+export default withErrorBoundary(TitleAndDescription, "Tiêu đề & mô tả");

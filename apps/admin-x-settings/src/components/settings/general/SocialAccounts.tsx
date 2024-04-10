@@ -1,11 +1,22 @@
-import React, {useState} from 'react';
-import TopLevelGroup from '../../TopLevelGroup';
-import useSettingGroup from '../../../hooks/useSettingGroup';
-import {SettingGroupContent, TextField, withErrorBoundary} from '@tryghost/admin-x-design-system';
-import {facebookHandleToUrl, facebookUrlToHandle, twitterHandleToUrl, twitterUrlToHandle, validateFacebookUrl, validateTwitterUrl} from '../../../utils/socialUrls';
-import {getSettingValues} from '@tryghost/admin-x-framework/api/settings';
+import React, { useState } from "react";
+import TopLevelGroup from "../../TopLevelGroup";
+import useSettingGroup from "../../../hooks/useSettingGroup";
+import {
+    SettingGroupContent,
+    TextField,
+    withErrorBoundary,
+} from "@tryghost/admin-x-design-system";
+import {
+    facebookHandleToUrl,
+    facebookUrlToHandle,
+    twitterHandleToUrl,
+    twitterUrlToHandle,
+    validateFacebookUrl,
+    validateTwitterUrl,
+} from "../../../utils/socialUrls";
+import { getSettingValues } from "@tryghost/admin-x-framework/api/settings";
 
-const SocialAccounts: React.FC<{ keywords: string[] }> = ({keywords}) => {
+const SocialAccounts: React.FC<{ keywords: string[] }> = ({ keywords }) => {
     const {
         localSettings,
         isEditing,
@@ -14,7 +25,7 @@ const SocialAccounts: React.FC<{ keywords: string[] }> = ({keywords}) => {
         handleCancel,
         updateSetting,
         focusRef,
-        handleEditingChange
+        handleEditingChange,
     } = useSettingGroup();
 
     const [errors, setErrors] = useState<{
@@ -22,26 +33,33 @@ const SocialAccounts: React.FC<{ keywords: string[] }> = ({keywords}) => {
         twitter?: string;
     }>({});
 
-    const [facebookHandle, twitterHandle] = getSettingValues<string | null>(localSettings, ['facebook', 'twitter']);
+    const [facebookHandle, twitterHandle] = getSettingValues<string | null>(
+        localSettings,
+        ["facebook", "twitter"]
+    );
 
-    const [facebookUrl, setFacebookUrl] = useState(facebookHandle ? facebookHandleToUrl(facebookHandle) : '');
-    const [twitterUrl, setTwitterUrl] = useState(twitterHandle ? twitterHandleToUrl(twitterHandle) : '');
+    const [facebookUrl, setFacebookUrl] = useState(
+        facebookHandle ? facebookHandleToUrl(facebookHandle) : ""
+    );
+    const [twitterUrl, setTwitterUrl] = useState(
+        twitterHandle ? twitterHandleToUrl(twitterHandle) : ""
+    );
 
     const values = (
         <SettingGroupContent
             values={[
                 {
-                    heading: `URL of your publication's Facebook Page`,
-                    key: 'facebook',
+                    heading: `Địa chỉ URL của trang Facebook của bạn`,
+                    key: "facebook",
                     value: facebookUrl,
-                    hideEmptyValue: true
+                    hideEmptyValue: true,
                 },
                 {
-                    heading: 'URL of your X (formerly Twitter) profile',
-                    key: 'twitter',
+                    heading: "Địa chỉ URL của trang Twitter của bạn",
+                    key: "twitter",
                     value: twitterUrl,
-                    hideEmptyValue: true
-                }
+                    hideEmptyValue: true,
+                },
             ]}
         />
     );
@@ -53,23 +71,23 @@ const SocialAccounts: React.FC<{ keywords: string[] }> = ({keywords}) => {
                 hint={errors.facebook}
                 inputRef={focusRef}
                 placeholder="https://www.facebook.com/ghost"
-                title={`URL of your publication's Facebook Page`}
+                title={`Địa chỉ URL của trang Facebook của bạn`}
                 value={facebookUrl}
                 onBlur={(e) => {
                     try {
                         const newUrl = validateFacebookUrl(e.target.value);
-                        updateSetting('facebook', facebookUrlToHandle(newUrl));
+                        updateSetting("facebook", facebookUrlToHandle(newUrl));
                         setFacebookUrl(newUrl);
                     } catch (err) {
                         if (err instanceof Error) {
-                            setErrors({...errors, facebook: err.message});
+                            setErrors({ ...errors, facebook: err.message });
                         }
                     }
                 }}
-                onChange={e => setFacebookUrl(e.target.value)}
+                onChange={(e) => setFacebookUrl(e.target.value)}
                 onKeyDown={() => {
                     if (errors.facebook) {
-                        setErrors({...errors, facebook: ''});
+                        setErrors({ ...errors, facebook: "" });
                     }
                 }}
             />
@@ -77,23 +95,23 @@ const SocialAccounts: React.FC<{ keywords: string[] }> = ({keywords}) => {
                 error={!!errors.twitter}
                 hint={errors.twitter}
                 placeholder="https://twitter.com/ghost"
-                title="URL of your X (formerly Twitter) profile"
+                title="Địa chỉ URL của trang Twitter của bạn"
                 value={twitterUrl}
                 onBlur={(e) => {
                     try {
                         const newUrl = validateTwitterUrl(e.target.value);
-                        updateSetting('twitter', twitterUrlToHandle(newUrl));
+                        updateSetting("twitter", twitterUrlToHandle(newUrl));
                         setTwitterUrl(newUrl);
                     } catch (err) {
                         if (err instanceof Error) {
-                            setErrors({...errors, twitter: err.message});
+                            setErrors({ ...errors, twitter: err.message });
                         }
                     }
                 }}
-                onChange={e => setTwitterUrl(e.target.value)}
+                onChange={(e) => setTwitterUrl(e.target.value)}
                 onKeyDown={() => {
                     if (errors.twitter) {
-                        setErrors({...errors, twitter: ''});
+                        setErrors({ ...errors, twitter: "" });
                     }
                 }}
             />
@@ -102,13 +120,13 @@ const SocialAccounts: React.FC<{ keywords: string[] }> = ({keywords}) => {
 
     return (
         <TopLevelGroup
-            description='Link your social accounts for full structured data and rich card support'
+            description="Liên kết tài khoản xã hội của bạn với trang web của bạn"
             isEditing={isEditing}
             keywords={keywords}
-            navid='social-accounts'
+            navid="social-accounts"
             saveState={saveState}
-            testId='social-accounts'
-            title='Social accounts'
+            testId="social-accounts"
+            title="Tài khoản mạng xã hội"
             onCancel={handleCancel}
             onEditingChange={handleEditingChange}
             onSave={() => {
@@ -143,4 +161,4 @@ const SocialAccounts: React.FC<{ keywords: string[] }> = ({keywords}) => {
     );
 };
 
-export default withErrorBoundary(SocialAccounts, 'Social accounts');
+export default withErrorBoundary(SocialAccounts, "Tài khoản mạng xã hội");

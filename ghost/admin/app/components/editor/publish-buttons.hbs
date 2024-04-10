@@ -7,7 +7,7 @@
             {{on-key "cmd+p" @publishManagement.togglePreview}}
             data-test-button="contributor-preview"
         >
-            <span>Preview</span>
+            <span>Xem trước</span>
         </button>
     {{/if}}
 
@@ -26,7 +26,7 @@
             {{on-key "cmd+p" @publishManagement.togglePreview}}
             data-test-button="publish-preview"
         >
-            <span>Preview</span>
+            <span>Xem trước</span>
         </button>
 
         <button
@@ -37,7 +37,7 @@
             disabled={{@publishManagement.publishOptions.isLoading}}
             data-test-button="publish-flow"
         >
-            <span>Publish</span>
+            <span>Xuất bản</span>
         </button>
     {{else}}
         <GhTaskButton

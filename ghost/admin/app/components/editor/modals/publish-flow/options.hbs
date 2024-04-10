@@ -1,6 +1,6 @@
 <div class="gh-publish-title" data-test-publish-flow="options">
-    <div class="green">Ready, set, publish.</div>
-    <div>Share it with the world.</div>
+    <div class="green">Xuất bản ngay bây giờ.</div>
+    <div>Chia sẻ bài viết của bạn tới công chúng</div>
 </div>
 
 <div class="gh-publish-settings">
@@ -8,7 +8,7 @@
         {{#if (or @publishOptions.emailUnavailable @publishOptions.publishDisabledError)}}
             <div class="gh-publish-setting-title {{if @publishOptions.publishDisabledError "disabled"}}" data-test-setting-title>
                 {{svg-jar "send-email"}}
-                <div class="gh-publish-setting-trigger">Publish on site</div>
+                <div class="gh-publish-setting-trigger">Xuất bản</div>
 
                 {{#if @publishOptions.publishDisabledError}}
                     <span>{{svg-jar "arrow-down" class="icon-expand"}}</span>
@@ -39,69 +39,6 @@
         {{/liquid-if}}
     </div>
 
-    {{#unless @publishOptions.emailUnavailable}}
-        <div class="gh-publish-setting" data-test-setting="email-recipients">
-            {{#if (or (eq @publishOptions.publishType "publish") @publishOptions.publishDisabledError)}}
-                <button
-                    type="button"
-                    class="gh-publish-setting-title disabled"
-                    data-test-setting-title
-                >
-                    {{svg-jar "member"}}
-                    <div class="gh-publish-setting-trigger">
-                        Not sent as newsletter
-                    </div>
-                    <span>
-                        {{svg-jar "arrow-down" class="icon-expand"}}
-                    </span>
-                </button>
-            {{else}}
-                <button
-                    type="button"
-                    class="gh-publish-setting-title"
-                    {{on "click" (fn this.toggleSection "emailRecipients")}}
-                    data-test-setting-title
-                >
-                    {{svg-jar "member"}}
-                    <div class="gh-publish-setting-trigger">
-                        {{#if @publishOptions.recipientFilter}}
-                            {{#let (members-count-fetcher query=(hash filter=@publishOptions.fullRecipientFilter)) as |countFetcher|}}
-                                {{#if (or (gt countFetcher.count 1) (is-empty countFetcher.count))}}
-                                    {{if (eq @recipientType "all") "All"}}
-                                {{/if}}
-
-                                {{format-number countFetcher.count}}
-
-                                {{!-- @recipientType = all/free/paid/all/specific --}}
-                                {{#if (not-eq @recipientType "all")}}
-                                    {{if (is-empty countFetcher.count) (capitalize @recipientType) @recipientType}}
-                                {{/if}}
-
-                                {{gh-pluralize countFetcher.count "subscriber" without-count=true}}
-
-                                {{#unless @publishOptions.onlyDefaultNewsletter}}
-                                    of <span class="gh-selected-newsletter">{{@publishOptions.newsletter.name}}</span>
-                                {{/unless}}
-                            {{/let}}
-                        {{else}}
-                            Not sent as newsletter
-                        {{/if}}
-                    </div>
-                    <span class="{{if (eq this.openSection "emailRecipients") "expanded"}}">
-                        {{svg-jar "arrow-down" class="icon-expand"}}
-                    </span>
-                </button>
-            {{/if}}
-            {{#liquid-if (eq this.openSection "emailRecipients")}}
-                <div class="gh-publish-setting-form">
-                    <Editor::PublishOptions::EmailRecipients
-                        @publishOptions={{@publishOptions}}
-                    />
-                </div>
-            {{/liquid-if}}
-        </div>
-    {{/unless}}
-
     {{#if (and @publishOptions.post.email (not @publishOptions.emailDisabledInSettings))}}
         <div class="gh-publish-setting" data-test-setting="email-recipients">
             <div class="gh-publish-setting-title disabled" data-test-setting-title>
@@ -131,7 +68,7 @@
                     {{#if @publishOptions.isScheduled}}
                         {{capitalize (gh-format-post-time @publishOptions.scheduledAtUTC relative=true)}}
                     {{else}}
-                        Right now
+                        Ngay bây giờ
                     {{/if}}
                 </span>
             </div>
@@ -153,7 +90,7 @@
 {{#unless @publishOptions.publishDisabledError}}
     <div class="gh-publish-cta">
         <button type="button" class="gh-btn gh-btn-black gh-btn-large" {{on "click" @confirm}} data-test-button="continue">
-            <span>Continue, final review &rarr;</span>
+            <span>Tới bước review lần cuối &rarr;</span>
         </button>
     </div>
 {{/unless}}

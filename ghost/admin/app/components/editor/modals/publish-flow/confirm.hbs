@@ -1,26 +1,24 @@
 <div class="gh-publish-title" data-test-publish-flow="confirm">
-    <div class="green">Ready, set, publish.</div>
-    <div>Share it with the world.</div>
+    <div class="green">Xuất bản ngay bây giờ.</div>
+    <div>Chia sẻ bài viết của bạn tới công chúng</div>
 </div>
 <p class="gh-publish-confirmation" data-test-text="confirm-details">
     {{#if @publishOptions.isScheduled}}
         {{#let (moment-site-tz @publishOptions.scheduledAtUTC) as |scheduledAt|}}
-            On
+            Vào ngày
             <strong>
-                {{moment-format scheduledAt "D MMM YYYY"}}
-                at
+                {{moment-format scheduledAt "DD/MM/YYYY"}}
+                lúc
                 {{moment-format scheduledAt "HH:mm"}}
             </strong>
-            your
+            bài viết
         {{/let}}
     {{else}}
-        Your
+        Bài viết
     {{/if}}
 
-    {{@publishOptions.post.displayName}}
-
     {{#if this.willPublish}}
-        will be published on your site{{#if this.willEmail}}, and delivered to{{else}}.{{/if}}
+        sẽ được xuất bản trên trang web{{#if this.willEmail}}, and delivered to{{else}}.{{/if}}
     {{/if}}
 
     {{#if this.willEmail}}
@@ -70,5 +68,5 @@
         @failureClass="gh-btn-red gh-btn-icon"
         data-test-button="confirm-publish"
     />
-    <button type="button" class="gh-btn gh-btn-link gh-btn-large gh-publish-cta-secondary" {{on "click" @cancel}} data-test-button="back-to-options">Back to settings</button>
+    <button type="button" class="gh-btn gh-btn-link gh-btn-large gh-publish-cta-secondary" {{on "click" @cancel}} data-test-button="back-to-options">Quay lại</button>
 </div>
