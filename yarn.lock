@@ -17668,6 +17668,15 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
+ghost-admin-api-schema@^4.5.5:
+  version "4.5.5"
+  resolved "https://registry.yarnpkg.com/ghost-admin-api-schema/-/ghost-admin-api-schema-4.5.5.tgz#ccecaec5fd6ffb31d57f49ec752f22698294bd23"
+  integrity sha512-VfbW0Hbo/boHfWoOsErBTqiNsgwmqyGPVkG3IOt5ju62i7TWVrwq453Q2rIXki7H+e25lbdl6q3npD8QqzDpEQ==
+  dependencies:
+    "@tryghost/errors" "^1.2.26"
+    ajv "^6.12.6"
+    lodash "^4.17.11"
+
 ghost-storage-base@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/ghost-storage-base/-/ghost-storage-base-1.0.0.tgz#931289d310ad59fc80e2be01a81235cc3a76e75a"

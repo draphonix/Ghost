@@ -28,7 +28,7 @@ export default Model.extend(ValidationEngine, {
     createdBy: attr('number'),
     updatedBy: attr('number'),
     count: attr('raw'),
-
+    bonus: attr('number'),
     isInternal: equal('visibility', 'internal'),
     isPublic: equal('visibility', 'public'),
 

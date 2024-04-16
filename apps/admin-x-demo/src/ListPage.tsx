@@ -1,11 +1,47 @@
 import {Avatar, Button, ButtonGroup, DynamicTable, DynamicTableColumn, DynamicTableRow, Heading, Hint, Page, SortMenu, Tooltip, ViewContainer, showToast} from '@tryghost/admin-x-design-system';
+import {Post, useBrowsePosts} from '@tryghost/admin-x-framework/api/posts';
 import {useRouting} from '@tryghost/admin-x-framework/routing';
 import {useState} from 'react';
 
+type Author = {
+    name: string;
+    email: string;
+    avatar: string;
+    posts: number;
+    revenue: number;
+};
+
+export
 const ListPage = () => {
     const {updateRoute} = useRouting();
     const [view, setView] = useState<string>('list');
+    const {data: {posts: fetchedPost} = {posts: []}} = useBrowsePosts(
+        {
+            searchParams: {
+                include: 'authors,tags'
+            }
+        }
+    );
+    const authorInformation:Author[] = [];
+    fetchedPost.map((post: any) => {
+    //    Check if primary_author.name existed in the authorInformation array
+    //    If not, add it to the array
+        let author = authorInformation.find((_author:Author) => _author.name === post.primary_author.name);
 
+        if (author === undefined) {
+            author = {
+                name: post.primary_author.name,
+                email: post.primary_author.email,
+                avatar: `https://i.pravatar.cc/150?img=${post.primary_author.profile_image}`,
+                posts: +1,
+                revenue: post.primary_tag?.bonus ?? 0
+            };
+            authorInformation.push(author);
+        } else {
+            author.posts += 1;
+            author.revenue += post.primary_tag?.bonus ?? 0;
+        }
+    });
     const dummyActions = [
         <Button label='Filter' onClick={() => {
             showToast({message: 'Were you really expecting a filter? 😛'});
@@ -58,49 +94,22 @@ const ListPage = () => {
 
     const testColumns: DynamicTableColumn[] = [
         {
-            title: 'Member',
+            title: 'Author',
             noWrap: true,
             minWidth: '1%',
             maxWidth: '1%'
         },
         {
-            title: 'Status'
+            title: 'Number of Posts'
         },
         {
-            title: 'Open rate'
-        },
-        {
-            title: 'Location',
-            noWrap: true
-        },
-        {
-            title: 'Created',
-            noWrap: true
-        },
-        {
-            title: 'Signed up on post',
-            noWrap: true,
-            maxWidth: '150px'
-        },
-        {
-            title: 'Newsletter'
-        },
-        {
-            title: 'Billing period'
-        },
-        {
-            title: 'Email sent'
-        },
-        {
-            title: '',
-            hidden: true,
-            disableRowClick: true
+            title: 'Revenue'
         }
     ];
 
-    const testRows = (noOfRows: number) => {
+    const testRows = (noOfRows : any) => {
         const data: DynamicTableRow[] = [];
-        for (let i = 0; i < noOfRows; i++) {
+        for (let i = 0; i < noOfRows.length; i++) {
             data.push(
                 {
                     onClick: () => {
@@ -110,26 +119,12 @@ const ListPage = () => {
                         (<div className='flex items-center gap-3 whitespace-nowrap pr-10'>
                             <Avatar image={`https://i.pravatar.cc/150?img=${i}`} />
                             <div>
-                                {i % 3 === 0 && <div className='whitespace-nowrap text-md'>Jamie Larson</div>}
-                                {i % 3 === 1 && <div className='whitespace-nowrap text-md'>Giana Septimus</div>}
-                                {i % 3 === 2 && <div className='whitespace-nowrap text-md'>Zaire Bator</div>}
-                                <div className='text-grey-700'>jamie@larson.com</div>
+                                <div className='whitespace-nowrap text-md'>{noOfRows[i].name}</div>
+                                <div className='text-grey-700'>{noOfRows[i].email}</div>
                             </div>
                         </div>),
-                        'Free',
-                        '40%',
-                        'London, UK',
-                        <div>
-                            <div>22 June 2023</div>
-                            <div className='text-grey-500'>5 months ago</div>
-                        </div>,
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-                        'Subscribed',
-                        'Monthly',
-                        '1,303',
-                        <Button color='green' label='Edit' link onClick={() => {
-                            alert('Clicked Edit in row:' + i);
-                        }} />
+                        `${noOfRows[i].posts}`,
+                        `${noOfRows[i].revenue}`
                     ]
                 }
             );
@@ -211,7 +206,7 @@ const ListPage = () => {
             footer={
                 <Hint>30 members</Hint>
             }
-            rows={testRows(30)}
+            rows={testRows(authorInformation.sort((a,b) => a.posts - b.posts))}
             stickyFooter
             stickyHeader
         />;
