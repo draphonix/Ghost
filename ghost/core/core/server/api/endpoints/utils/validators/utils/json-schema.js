@@ -1,4 +1,4 @@
-const jsonSchema = require('@tryghost/admin-api-schema');
+const jsonSchema = require('ghost-admin-api-schema');
 
 /**
  *
@@ -8,9 +8,12 @@ const jsonSchema = require('@tryghost/admin-api-schema');
  * @param {Object} frame "frame" object with data attached to it
  * @param {Object} frame.data request data to validate
  */
-const validate = async (apiConfig, frame) => await jsonSchema.validate({
-    data: frame.data,
-    schema: `${apiConfig.docName}-${apiConfig.method}`
-});
+const validate = async (apiConfig, frame) => {
+    const results = await jsonSchema.validate({
+        data: frame.data,
+        schema: `${apiConfig.docName}-${apiConfig.method}`
+    });
+    return results;
+};
 
 module.exports.validate = validate;

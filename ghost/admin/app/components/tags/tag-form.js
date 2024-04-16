@@ -148,6 +148,10 @@ export default class TagForm extends Component {
             this.hasChangedSlug = !!newValue;
         }
 
+        if (property === 'bonus') {
+            newValue = parseInt(newValue) || 0;
+        }
+
         tag[property] = newValue;
 
         // clear validation message when typing
