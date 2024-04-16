@@ -1,13 +1,13 @@
 <div class="flex flex-column h-100 items-center overflow-auto" data-test-modal="update-flow">
     <header class="gh-publish-header">
         <button class="gh-btn-editor gh-publish-back-button" title="Close" type="button" {{on "click" @close}}>
-            <span>{{svg-jar "arrow-left"}} Editor</span>
+            <span>{{svg-jar "arrow-left"}} Trình soạn thảo</span>
         </button>
         <div class="flex">
             {{#let @data.publishOptions.post as |post|}}
                 {{#if (not (and post.isSent (not post.isPublished)))}}
                     <button class="gh-btn gh-btn-editor darkgrey gh-unpublish-trigger active" title="Close" type="button" {{on "click" @close}}>
-                        <span>{{if post.isScheduled "Unschedule" "Unpublish"}}</span>
+                        <span>{{if post.isScheduled "Huỷ lên lịch" "Huỷ xuất bản"}}</span>
                     </button>
                 {{/if}}
             {{/let}}
@@ -22,17 +22,16 @@
                     This {{post.displayName}} was
                     <span class="green">{{post.status}} by email</span>
                 {{else}}
-                    This {{post.displayName}} has been
-                    <span class="green">{{post.status}}</span>
+                    Bài viết đã được
+                    <span class="green">{{if post.isScheduled "lên lịch" "xuất bản"}}</span>
                 {{/if}}
             </div>
 
             <div class="gh-publish-confirmation" data-test-update-flow-confirmation>
                 <p>
-                    Your
-                    {{post.displayName}}
+                    Bài viết của bạn
 
-                    {{if post.isScheduled "will be" "was"}}
+                    {{if post.isScheduled "sẽ" "đã"}}
 
                     {{#if
                         (or post.hasBeenEmailed
@@ -55,13 +54,13 @@
                             {{#if this.showNewsletterName}}of <strong>{{post.newsletter.name}}</strong>{{/if}}
                         {{/if}}
                     {{else}}
-                        published on your site
+                        xuất bản trên trang web
                     {{/if}}
 
                     {{#let (moment-site-tz post.publishedAtUTC) as |publishedAt|}}
-                        on
-                        {{moment-format publishedAt "D MMM YYYY"}}
-                        at
+                        vào ngày
+                        {{moment-format publishedAt "DD/MM/YYYY"}}
+                        lúc
                         {{moment-format publishedAt "HH:mm"}}.
                     {{/let}}
 
@@ -84,14 +83,14 @@
                         {{/if}}
 
                         <br><br>
-                        Need to make a change?
+                        Cần sửa đổi?
                         <button
                             type="button"
                             class="gh-revert-to-draft"
                             {{on "click" (fn @close (hash afterTask="revertToDraftTask"))}}
                             data-test-button="revert-to-draft"
                         >
-                            <span>Unschedule and revert to draft &rarr;</span>
+                            <span>Huỷ lên lịch và đưa về trạng thái nháp &rarr;</span>
                         </button>
                     {{else if (not post.emailOnly)}}
                         <br><br>
@@ -101,7 +100,7 @@
                             {{on "click" (fn @close (hash afterTask="revertToDraftTask"))}}
                             data-test-button="revert-to-draft"
                         >
-                            <span>Unpublish and revert to private draft &rarr;</span>
+                            <span>Huỷ xuất bản và đưa về trạng thái nháp &rarr;</span>
                         </button>
                     {{/if}}
                 </p>
